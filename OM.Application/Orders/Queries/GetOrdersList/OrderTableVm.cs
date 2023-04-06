@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using OM.Application.Common.Mappings;
+using OM.Application.OrderItems.Queries.GetOrderItemsListForOrder;
 using OM.Application.Orders.Queries.GetOrderDetails;
 using OM.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace OM.Application.Orders.Queries.GetOrdersList

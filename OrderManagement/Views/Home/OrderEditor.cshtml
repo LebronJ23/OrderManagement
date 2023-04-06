@@ -1,0 +1,72 @@
+﻿@model OrderViewModel
+
+<h3 class="bg-@Model.Theme text-white text-center p-2">
+    @Model.Action
+</h3>
+
+<form asp-action="@Model.Action" method="post">
+
+    <div class="form-group">
+        <label asp-for="OrderDetails.Id"></label>
+        <input class="form-control" asp-for="OrderDetails.Id" disabled readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="OrderDetails.Number"></label>
+        <div>
+            <span asp-validation-for="OrderDetails.Number" class="text-danger"></span>
+        </div>
+        <input class="form-control" asp-for="OrderDetails.Number" disabled="@Model.ReadOnly" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="OrderDetails.Date"></label>
+        <div>
+            <span asp-validation-for="OrderDetails.Date" class="text-danger"></span>
+        </div>
+        <input class="form-control" asp-for="OrderDetails.Date" disabled="@Model.ReadOnly" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="OrderDetails.Provider.Id"></label>
+        <div>
+            <span asp-validation-for="OrderDetails.Provider.Id" class="text-danger"></span>
+        </div>
+        <select asp-for="OrderDetails.Provider.Id" class="form-control" disabled="@Model.ReadOnly"
+                asp-items="@(new SelectList(Model.Providers.Providers, "Id", "Name"))">
+            <option value="" disabled selected>Choose a Provider</option>
+        </select>
+    </div>
+
+    <div class="m-2" hidden="@(Model.OrderDetails.Id == 0)">
+        <h5 class="bg-primary text-white text-center p-2">OrderItems</h5>
+        <table class="table table-sm table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (OrderItemTableVm orderItem in Model.OrderDetails.OrderItems)
+                {
+                    <tr>
+                        <td>@orderItem.Name</td>
+                        <td>@orderItem.Quantity</td>
+                        <td>@orderItem.Unit</td>
+                            
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <partial name="_OrderItem" model="@new OrderItemTableVm { OrderId = Model.OrderDetails.Id}" />
+    </div>
+
+    @if (Model.ShowAction)
+    {
+        <button class="btn btn-@Model.Theme" type="submit">@Model.Action</button>
+    }
+    <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Back</a>
+</form>

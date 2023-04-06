@@ -10,7 +10,7 @@ namespace OM.Application
 {
     public static class DIExtension
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddMediatR(opts =>
             {

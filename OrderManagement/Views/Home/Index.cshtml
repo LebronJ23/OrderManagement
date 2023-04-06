@@ -1,0 +1,33 @@
+﻿@model OrderTableListVm
+
+<div class="m-2">
+    <h4 class="bg-primary text-white text-center p-2">Orders</h4>
+    <table class="table table-sm table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Number</th>
+                <th>Date</th>
+                <th>Provider</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (OrderTableVm order in Model.Orders)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.Number</td>
+                    <td>@order.Date</td>
+                    <td>@order.Provider.Name</td>
+                    <td class="text-center">
+                        <a asp-action="Details" asp-route-id="@order.Id" class="btn btn-sm btn-info">Details</a>
+                        <a asp-action="Edit" asp-route-id="@order.Id" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@order.Id" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-action="Create" class="btn btn-primary">Create</a>
+</div>

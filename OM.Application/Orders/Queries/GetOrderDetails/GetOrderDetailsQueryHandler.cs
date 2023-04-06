@@ -28,6 +28,7 @@ namespace OM.Application.Orders.Queries.GetOrderDetails
             var order = await _dbContext
                 .Orders
                 .Include(o => o.OrderItems)
+                .Include(o => o.Provider)
                 .FirstOrDefaultAsync(order => order.Id == request.Id, cancellationToken);
 
             if (order == null || order.Id != request.Id)

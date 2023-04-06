@@ -9,10 +9,10 @@ namespace OM.Domain
     {
         public int Id { get; set; }
         public string Number { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
         public int ProviderId { get; set; }
         public Provider Provider { get; set; }
 
-        public IQueryable<OrderItem> OrderItems{ get; set; }
+        public IEnumerable<OrderItem> OrderItems{ get; set; }
     }
 }

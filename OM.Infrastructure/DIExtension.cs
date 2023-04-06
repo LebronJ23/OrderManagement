@@ -16,6 +16,7 @@ namespace OM.Infrastructure
             services.AddDbContext<OrdersDbContext>(opts => 
             {
                 opts.UseSqlServer(connectionString);
+                opts.EnableSensitiveDataLogging(true);
             });
             services.AddScoped<IOrdersDbContext>(provider => provider.GetService<OrdersDbContext>());
             return services;

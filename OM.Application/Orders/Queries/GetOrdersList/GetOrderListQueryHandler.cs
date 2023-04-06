@@ -24,6 +24,7 @@ namespace OM.Application.Orders.Queries.GetOrdersList
         {
             var ordersList = await _dbContext
                 .Orders
+                .Include(order => order.OrderItems)
                 .ProjectTo<OrderTableVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
