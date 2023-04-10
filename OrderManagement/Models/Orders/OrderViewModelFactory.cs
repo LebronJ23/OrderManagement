@@ -32,5 +32,30 @@ namespace OrderManagement.Models.Orders
                 Providers = providers,
             };
         }
+
+        public static OrderViewModel Delete(OrderDetailsVm orderDetailsVm)
+        {
+            return new OrderViewModel
+            {
+                OrderDetails = orderDetailsVm,
+                OrderItems = orderDetailsVm.OrderItems,
+                Providers = new ProviderListVm { Providers = new List<ProviderVm> { orderDetailsVm.Provider } },
+                Action = "Delete",
+                Theme = "danger",
+                ReadOnly = true,
+            };
+        }
+
+        public static OrderViewModel Edit(OrderDetailsVm orderDetailsVm, ProviderListVm providers)
+        {
+            return new OrderViewModel
+            {
+                OrderDetails = orderDetailsVm,
+                OrderItems = orderDetailsVm.OrderItems,
+                Providers = providers,
+                Action = "Edit",
+                Theme = "warning",
+            };
+        }
     }
 }

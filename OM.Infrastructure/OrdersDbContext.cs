@@ -24,6 +24,7 @@ namespace OM.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderItemTypeConfiguration());
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.SeedData();

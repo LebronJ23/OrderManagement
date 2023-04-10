@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using OM.Application.Common.Mappings;
 using OM.Application.OrderItems.Queries.GetOrderItemsListForOrder;
+using OM.Application.Orders.Commands.Create;
+using OM.Application.Orders.Commands.Delete;
+using OM.Application.Orders.Commands.Update;
 using OM.Application.Orders.Queries.GetOrderDetails;
 using OM.Application.Providers.Queries;
 using OM.Domain;
@@ -11,7 +14,7 @@ using System.Text;
 
 namespace OM.Application.Orders.Queries.GetOrderDetails
 {
-    public class OrderDetailsVm : IMapWith<Order>
+    public class OrderDetailsVm : IMapWith<Order>, IMapWith<CreateOrderCommand>, IMapWith<UpdateOrderCommand>, IMapWith<DeleteOrderCommand>
     {
         public int Id { get; set; }
         public string Number { get; set; }
@@ -23,12 +26,25 @@ namespace OM.Application.Orders.Queries.GetOrderDetails
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Order, OrderDetailsVm>();
-                //.ForMember(orderVm => orderVm.Id, opt => opt.MapFrom(order => order.Id))
-                //.ForMember(orderVm => orderVm.Number, opt => opt.MapFrom(order => order.Number))
-                //.ForMember(orderVm => orderVm.Date, opt => opt.MapFrom(order => order.Date))
-                //.ForMember(orderVm => orderVm.ProviderId, opt => opt.MapFrom(order => order.ProviderId))
-                //.ForMember(orderVm => orderVm.Provider, opt => opt.MapFrom(order => order.Provider))
-                //.ForMember(orderVm => orderVm.OrderItems, opt => opt.MapFrom(order => order.OrderItems));
+            profile.CreateMap<OrderDetailsVm, CreateOrderCommand>()
+                .ForMember(orderVm => orderVm.Number, opt => opt.MapFrom(order => order.Number))
+                .ForMember(orderVm => orderVm.CreationDate, opt => opt.MapFrom(order => order.Date))
+                .ForMember(orderVm => orderVm.ProviderId, opt => opt.MapFrom(order => order.ProviderId));
+            profile.CreateMap<OrderDetailsVm, UpdateOrderCommand>()
+                .ForMember(orderVm => orderVm.Id, opt => opt.MapFrom(order => order.Id))
+                .ForMember(orderVm => orderVm.Number, opt => opt.MapFrom(order => order.Number))
+                .ForMember(orderVm => orderVm.CreationDate, opt => opt.MapFrom(order => order.Date))
+                .ForMember(orderVm => orderVm.ProviderId, opt => opt.MapFrom(order => order.ProviderId));
+            profile.CreateMap<OrderDetailsVm, DeleteOrderCommand>()
+                .ForMember(orderVm => orderVm.Id, opt => opt.MapFrom(order => order.Id));
+
+
+            //.ForMember(orderVm => orderVm.Id, opt => opt.MapFrom(order => order.Id))
+            //.ForMember(orderVm => orderVm.Number, opt => opt.MapFrom(order => order.Number))
+            //.ForMember(orderVm => orderVm.Date, opt => opt.MapFrom(order => order.Date))
+            //.ForMember(orderVm => orderVm.ProviderId, opt => opt.MapFrom(order => order.ProviderId))
+            //.ForMember(orderVm => orderVm.Provider, opt => opt.MapFrom(order => order.Provider))
+            //.ForMember(orderVm => orderVm.OrderItems, opt => opt.MapFrom(order => order.OrderItems));
         }
     }
 }
