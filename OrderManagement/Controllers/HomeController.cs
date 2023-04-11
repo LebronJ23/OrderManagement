@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Internal;
 using OM.Application.Orders.Commands.Create;
 using OM.Application.Orders.Commands.Delete;
 using OM.Application.Orders.Commands.Update;
 using OM.Application.Orders.Queries.GetOrderDetails;
 using OM.Application.Orders.Queries.GetOrdersList;
 using OM.Application.Providers.Queries;
+using OM.Domain;
 using OrderManagement.Models.Orders;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,9 +18,35 @@ namespace OrderManagement.Controllers
 {
     public class HomeController : BaseViewController
     {
-        public async Task<IActionResult> Index(CancellationToken cancellationToken)
+        [HttpGet]
+        public async Task<IActionResult> Index(int? providerId, string number, DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
         {
-            var query = new GetOrderListQuery();
+            var providersQuery = new GetProviderListQuery();
+            var providersList = await Mediator.Send(providersQuery, cancellationToken);
+            var filtrationModel = new FiltrationModel
+            {
+                Number = number,
+                ProviderId = providerId ?? 0,
+                Providers = providersList,
+            };
+            if(startDate != DateTime.MinValue)
+            {
+                filtrationModel.StartDate = startDate;
+            }
+            if (endDate != DateTime.MinValue)
+            {
+                filtrationModel.EndDate = endDate;
+            }
+            //if (!FiltrationModel.Providers.Providers.Any())
+            //{
+            //    var providersQuery = new GetProviderListQuery();
+            //    var providersList = await Mediator.Send(providersQuery, cancellationToken);
+            //    FiltrationModel.Providers = providersList;
+            //}
+            var query = new GetOrderListQuery
+            {
+                FiltrationModel = filtrationModel,
+            };
             var model = await Mediator.Send(query, cancellationToken);
 
             return View(model);

@@ -7,5 +7,7 @@ namespace OM.Application.Orders.Queries.GetOrdersList
     public class OrderTableListVm
     {
         public IList<OrderTableVm> Orders { get; set; }
+
+        public FiltrationModel FiltrationModel { get; set; }
     }
 }

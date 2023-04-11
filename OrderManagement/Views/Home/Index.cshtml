@@ -1,5 +1,44 @@
 ﻿@model OrderTableListVm
 
+<form method="get">
+    <div class="form-group m-2">
+        <label asp-for="FiltrationModel.Number"></label>
+        <div>
+            <span asp-validation-for="FiltrationModel.Number" class="text-danger"></span>
+        </div>
+        <input class="form-control" name="Number" asp-for="FiltrationModel.Number" />
+    </div>
+
+    <div class="form-group m-2">
+        <label asp-for="FiltrationModel.StartDate"></label>
+        <div>
+            <span asp-validation-for="FiltrationModel.StartDate" class="text-danger"></span>
+        </div>
+        <input class="form-control" name="StartDate" asp-for="FiltrationModel.StartDate" />
+    </div>
+
+    <div class="form-group m-2">
+        <label asp-for="FiltrationModel.EndDate"></label>
+        <div>
+            <span asp-validation-for="FiltrationModel.EndDate" class="text-danger"></span>
+        </div>
+        <input class="form-control" name="EndDate" asp-for="FiltrationModel.EndDate" />
+    </div>
+
+    <div class="form-group m-2">
+        <label asp-for="FiltrationModel.ProviderId"></label>
+        <div>
+            <span asp-validation-for="FiltrationModel.ProviderId" class="text-danger"></span>
+        </div>
+        <select name="ProviderId" asp-for="FiltrationModel.ProviderId" class="form-control"
+                asp-items="@(new SelectList(Model.FiltrationModel.Providers.Providers, "Id", "Name"))">
+            <option value="" selected>Choose a Provider</option>
+        </select>
+    </div>
+
+    <button class="btn m-2 btn-primary" type="submit">Filter</button>
+</form>
+
 <div class="m-2">
     <h4 class="bg-primary text-white text-center p-2">Orders</h4>
     <table class="table table-sm table-bordered table-striped">
