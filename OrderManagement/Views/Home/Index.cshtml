@@ -1,38 +1,86 @@
 ﻿@model OrderTableListVm
 
 <form method="get">
-    <div class="form-group m-2">
-        <label asp-for="FiltrationModel.Number"></label>
+    @*<div class="form-group m-2">
+        <label asp-for="@Model.FiltrationModel.Number"></label>
         <div>
-            <span asp-validation-for="FiltrationModel.Number" class="text-danger"></span>
+            <span asp-validation-for="@Model.FiltrationModel.Number" class="text-danger"></span>
         </div>
-        <input class="form-control" name="Number" asp-for="FiltrationModel.Number" />
+        <input class="form-control" asp-for="@Model.FiltrationModel.Number" />
+    </div>*@
+
+    <div class="form-group m-2">
+        <label asp-for="@Model.FiltrationModel.Numbers"></label>
+        <div>
+            <span asp-validation-for="@Model.FiltrationModel.Numbers" class="text-danger"></span>
+        </div>
+        <select class="form-control" multiple="multiple"
+                asp-for="@Model.FiltrationModel.Numbers"
+                asp-items="@(new MultiSelectList(Model.Numbers, "Number", "Number"))">
+        </select>
     </div>
 
     <div class="form-group m-2">
-        <label asp-for="FiltrationModel.StartDate"></label>
+        <label asp-for="@Model.FiltrationModel.OrderItemNames"></label>
         <div>
-            <span asp-validation-for="FiltrationModel.StartDate" class="text-danger"></span>
+            <span asp-validation-for="@Model.FiltrationModel.OrderItemNames" class="text-danger"></span>
         </div>
-        <input class="form-control" name="StartDate" asp-for="FiltrationModel.StartDate" />
+        <select class="form-control" multiple="multiple"
+                asp-for="@Model.FiltrationModel.OrderItemNames"
+                asp-items="@(new MultiSelectList
+                                (Model.OrderItems.OrderItems.Select(oI => new { Name = oI.Name }).Distinct(),
+                                "Name", "Name"))">
+        </select>
     </div>
 
     <div class="form-group m-2">
-        <label asp-for="FiltrationModel.EndDate"></label>
+        <label asp-for="@Model.FiltrationModel.OrderItemUnits"></label>
         <div>
-            <span asp-validation-for="FiltrationModel.EndDate" class="text-danger"></span>
+            <span asp-validation-for="@Model.FiltrationModel.OrderItemUnits" class="text-danger"></span>
         </div>
-        <input class="form-control" name="EndDate" asp-for="FiltrationModel.EndDate" />
+        <select class="form-control" multiple="multiple"
+                asp-for="@Model.FiltrationModel.OrderItemUnits"
+                asp-items="@(new MultiSelectList
+                                (Model.OrderItems.OrderItems.Select(oI => new { Unit = oI.Unit }).Distinct(),
+                                "Unit", "Unit"))">
+        </select>
     </div>
 
     <div class="form-group m-2">
-        <label asp-for="FiltrationModel.ProviderId"></label>
+        <label asp-for="@Model.FiltrationModel.StartDate"></label>
         <div>
-            <span asp-validation-for="FiltrationModel.ProviderId" class="text-danger"></span>
+            <span asp-validation-for="@Model.FiltrationModel.StartDate" class="text-danger"></span>
         </div>
-        <select name="ProviderId" asp-for="FiltrationModel.ProviderId" class="form-control"
-                asp-items="@(new SelectList(Model.FiltrationModel.Providers.Providers, "Id", "Name"))">
+        <input class="form-control" asp-for="@Model.FiltrationModel.StartDate" />
+    </div>
+
+    <div class="form-group m-2">
+        <label asp-for="@Model.FiltrationModel.EndDate"></label>
+        <div>
+            <span asp-validation-for="@Model.FiltrationModel.EndDate" class="text-danger"></span>
+        </div>
+        <input class="form-control" asp-for="@Model.FiltrationModel.EndDate" />
+    </div>
+
+    @*<div class="form-group m-2">
+        <label asp-for="@Model.FiltrationModel.ProviderId"></label>
+        <div>
+            <span asp-validation-for="@Model.FiltrationModel.ProviderId" class="text-danger"></span>
+        </div>
+        <select asp-for="@Model.FiltrationModel.ProviderId" class="form-control"
+                asp-items="@(new SelectList(Model.Providers.Providers, "Id", "Name"))">
             <option value="" selected>Choose a Provider</option>
+        </select>
+    </div>*@
+
+    <div class="form-group m-2">
+        <label asp-for="@Model.FiltrationModel.FiltrationProviders"></label>
+        <div>
+            <span asp-validation-for="@Model.FiltrationModel.FiltrationProviders" class="text-danger"></span>
+        </div>
+        <select class="form-control" multiple="multiple"
+                asp-for="@Model.FiltrationModel.FiltrationProviders"
+                asp-items="@(new MultiSelectList(Model.Providers.Providers, "Id", "Name"))">
         </select>
     </div>
 

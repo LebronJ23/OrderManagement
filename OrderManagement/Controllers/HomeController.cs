@@ -2,15 +2,18 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
+using OM.Application.OrderItems.Queries.GetOrderItemsListForOrder;
 using OM.Application.Orders.Commands.Create;
 using OM.Application.Orders.Commands.Delete;
 using OM.Application.Orders.Commands.Update;
+using OM.Application.Orders.Queries.GetAllOrders;
 using OM.Application.Orders.Queries.GetOrderDetails;
 using OM.Application.Orders.Queries.GetOrdersList;
 using OM.Application.Providers.Queries;
 using OM.Domain;
 using OrderManagement.Models.Orders;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -19,24 +22,29 @@ namespace OrderManagement.Controllers
     public class HomeController : BaseViewController
     {
         [HttpGet]
-        public async Task<IActionResult> Index(int? providerId, string number, DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
+        //public async Task<IActionResult> Index(int? providerId, string number, DateTime startDate, DateTime endDate, CancellationToken cancellationToken)
+        public async Task<IActionResult> Index(FiltrationModel filtrationModel, CancellationToken cancellationToken)
         {
             var providersQuery = new GetProviderListQuery();
             var providersList = await Mediator.Send(providersQuery, cancellationToken);
-            var filtrationModel = new FiltrationModel
-            {
-                Number = number,
-                ProviderId = providerId ?? 0,
-                Providers = providersList,
-            };
-            if(startDate != DateTime.MinValue)
-            {
-                filtrationModel.StartDate = startDate;
-            }
-            if (endDate != DateTime.MinValue)
-            {
-                filtrationModel.EndDate = endDate;
-            }
+
+            var ordersQuery = new GetAllOrdersQuery();
+            var ordersQueryResult = await Mediator.Send(ordersQuery, cancellationToken);
+
+            //var filtrationModel = new FiltrationModel
+            //{
+            //    Number = number,
+            //    ProviderId = providerId ?? 0,
+            //    Providers = providersList,
+            //};
+            //if(startDate != DateTime.MinValue)
+            //{
+            //    filtrationModel.StartDate = startDate;
+            //}
+            //if (endDate != DateTime.MinValue)
+            //{
+            //    filtrationModel.EndDate = endDate;
+            //}
             //if (!FiltrationModel.Providers.Providers.Any())
             //{
             //    var providersQuery = new GetProviderListQuery();
@@ -46,6 +54,25 @@ namespace OrderManagement.Controllers
             var query = new GetOrderListQuery
             {
                 FiltrationModel = filtrationModel,
+                Providers = new ProviderListVm
+                {
+                    Providers = ordersQueryResult
+                        .Orders
+                        .Select(order => order.Provider)
+                        .GroupBy(p => p.Id)
+                        .Select(g => g.First())
+                        .ToList()
+                },
+                Numbers = ordersQueryResult.Orders.ToList(),
+                OrderItems = new OrderItemListVm 
+                { 
+                    OrderItems = ordersQueryResult
+                        .Orders
+                        .SelectMany(order => order.OrderItems)
+                        .GroupBy(oI => oI.Id)
+                        .Select(oIg => oIg.First())
+                        .ToList()
+                }
             };
             var model = await Mediator.Send(query, cancellationToken);
 
