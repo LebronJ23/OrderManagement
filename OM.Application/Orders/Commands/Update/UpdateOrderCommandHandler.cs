@@ -8,7 +8,7 @@ using OM.Application.Common.Exceptions;
 
 namespace OM.Application.Orders.Commands.Update
 {
-    public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand>
+    public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand, int>
     {
         private readonly IOrdersDbContext _dbContext;
 
@@ -17,7 +17,7 @@ namespace OM.Application.Orders.Commands.Update
             _dbContext = dbContext;
         }
 
-        public async Task Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(UpdateOrderCommand request, CancellationToken cancellationToken)
         {
             var order = await _dbContext.Orders.FirstOrDefaultAsync(order => order.Id == request.Id, cancellationToken);
 
@@ -31,6 +31,8 @@ namespace OM.Application.Orders.Commands.Update
             order.Date = request.CreationDate;
 
             await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return order.Id;
         }
     }
 }

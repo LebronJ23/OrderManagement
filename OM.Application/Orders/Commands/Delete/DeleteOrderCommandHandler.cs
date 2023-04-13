@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace OM.Application.Orders.Commands.Delete
 {
-    public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand>
+    public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, int>
     {
         private readonly IOrdersDbContext _dbContext;
 
@@ -21,7 +21,7 @@ namespace OM.Application.Orders.Commands.Delete
             _dbContext = dbContext;
         }
 
-        public async Task Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
         {
             var order = await _dbContext.Orders.FirstOrDefaultAsync(order => order.Id == request.Id, cancellationToken);
 
@@ -32,6 +32,8 @@ namespace OM.Application.Orders.Commands.Delete
 
             _dbContext.Orders.Remove(order);
             await _dbContext.SaveChangesAsync(cancellationToken);
+
+            return 0;
         }
     }
 }

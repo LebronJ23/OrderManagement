@@ -46,33 +46,9 @@
     <a class="btn m-2 btn-secondary" asp-controller="Home" asp-action="Index">Back</a>
 </form>
 
-<div class="m-2" hidden="@(Model.OrderDetails.Id == 0)">
+@*<div class="m-2" hidden="@(Model.OrderDetails.Id == 0)">*@
+<div class="m-2" hidden="@(Model.Action != "Edit")">
     <h5 class="bg-primary text-white text-center p-2">OrderItems</h5>
-    @*<table class="table table-sm table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Unit</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (OrderItemTableVm orderItem in Model.OrderDetails.OrderItems)
-            {
-                <tr>
-                    <td>@orderItem.Name</td>
-                    <td>@orderItem.Quantity</td>
-                    <td>@orderItem.Unit</td>
-                    <td>
-                        <a asp-controller="OrderItem" asp-action="Edit" asp-route-id="@orderItem.Id" class="btn btn-sm btn-info">Edit</a>
-                        <a asp-controller="OrderItem" asp-action="Delete" asp-route-id="@orderItem.Id" class="btn btn-sm btn-warning">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>*@
-
     @foreach (OrderItemTableVm orderItem in Model.OrderDetails.OrderItems)
     {
         <div class="m-2">

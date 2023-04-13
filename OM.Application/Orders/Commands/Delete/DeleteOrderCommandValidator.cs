@@ -9,7 +9,7 @@ namespace OM.Application.Orders.Commands.Delete
     {
         public DeleteOrderCommandValidator() 
         {
-            RuleFor(createOrderCommand => createOrderCommand.Id).GreaterThan(0);
+            RuleFor(deleteOrderCommand => deleteOrderCommand.Id).GreaterThan(0);
         }
     }
 }

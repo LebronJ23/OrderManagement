@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OM.Application.Orders.Commands.Delete
 {
-    public class DeleteOrderCommand : IRequest
+    public class DeleteOrderCommand : IRequest<int>
     {
         public int Id { get; set; }
     }

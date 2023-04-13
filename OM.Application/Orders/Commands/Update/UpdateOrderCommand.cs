@@ -5,7 +5,7 @@ using System.Text;
 
 namespace OM.Application.Orders.Commands.Update
 {
-    public class UpdateOrderCommand : IRequest
+    public class UpdateOrderCommand : IRequest<int>
     {
         public int Id { get; set; }
         public int ProviderId { get; set; }

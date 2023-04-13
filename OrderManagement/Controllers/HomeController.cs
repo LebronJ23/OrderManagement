@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -80,25 +81,6 @@ namespace OrderManagement.Controllers
             return View("OrderEditor", OrderViewModelFactory.Create(orderDetails, providersList));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromForm] OrderDetailsVm orderDetails, CancellationToken cancellationToken)
-        {
-
-            if (ModelState.IsValid)
-            {
-                var command = Mapper.Map<CreateOrderCommand>(orderDetails);
-                var orderId = await Mediator.Send(command, cancellationToken);
-
-                return RedirectToAction("Index");
-            }
-
-            orderDetails = new OrderDetailsVm();
-            var providersQuery = new GetProviderListQuery();
-            var providersList = await Mediator.Send(providersQuery, cancellationToken);
-
-            return View("OrderEditor", OrderViewModelFactory.Create(orderDetails, providersList));
-        }
-
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             var query = new GetOrderDetailsQuery
@@ -121,7 +103,6 @@ namespace OrderManagement.Controllers
                 return RedirectToAction("Index");
             }
 
-
             return View("OrderEditor", OrderViewModelFactory.Delete(orderDetails));
         }
 
@@ -141,11 +122,25 @@ namespace OrderManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit([FromForm] OrderDetailsVm orderDetails, CancellationToken cancellationToken)
         {
-            if (ModelState.IsValid)
+            try
             {
                 var command = Mapper.Map<UpdateOrderCommand>(orderDetails);
                 await Mediator.Send(command, cancellationToken);
+            }
+            catch (ValidationException valEx)
+            {
+                foreach (var item in valEx.Errors)
+                {
+                    ModelState.AddModelError($"OrderDetails.{item.PropertyName}", item.ErrorMessage);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
+            if (ModelState.IsValid)
+            {
                 return RedirectToAction("Index");
             }
 
@@ -153,6 +148,37 @@ namespace OrderManagement.Controllers
             var providersList = await Mediator.Send(providersQuery, cancellationToken);
 
             return View("OrderEditor", OrderViewModelFactory.Edit(orderDetails, providersList));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromForm] OrderDetailsVm orderDetails, CancellationToken cancellationToken)
+        {
+            var providersQuery = new GetProviderListQuery();
+            var providersList = await Mediator.Send(providersQuery, cancellationToken);
+
+            try
+            {
+                var command = Mapper.Map<CreateOrderCommand>(orderDetails);
+                var orderId = await Mediator.Send(command, cancellationToken);
+            }
+            catch (ValidationException valEx)
+            {
+                foreach (var item in valEx.Errors)
+                {
+                    ModelState.AddModelError($"OrderDetails.{item.PropertyName}", item.ErrorMessage);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException();
+            }
+
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View("OrderEditor", OrderViewModelFactory.Create(orderDetails, providersList));
         }
     }
 }

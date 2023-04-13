@@ -9,10 +9,10 @@ namespace OM.Application.Orders.Commands.Update
     {
         public UpdateOrderCommandValidator() 
         {
-            RuleFor(createOrderCommand => createOrderCommand.Id).GreaterThan(0);
-            RuleFor(createOrderCommand => createOrderCommand.Number).NotEqual(string.Empty).MaximumLength(250);
-            RuleFor(createOrderCommand => createOrderCommand.CreationDate).NotEmpty();
-            RuleFor(createOrderCommand => createOrderCommand.ProviderId).GreaterThan(0);
+            RuleFor(updateOrderCommand => updateOrderCommand.Id).GreaterThan(0);
+            RuleFor(updateOrderCommand => updateOrderCommand.Number).NotEmpty().MinimumLength(2).MaximumLength(250);
+            RuleFor(updateOrderCommand => updateOrderCommand.CreationDate).NotEmpty();
+            RuleFor(updateOrderCommand => updateOrderCommand.ProviderId).GreaterThan(0);
         }
     }
 }

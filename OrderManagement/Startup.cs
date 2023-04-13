@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -44,6 +45,8 @@ namespace OrderManagement
                 options.Filters.Add<OperationCancelledExceptionFilter>();
             }).AddRazorRuntimeCompilation();
 
+            services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+
             services.AddCors(opts =>
             {
                 opts.AddPolicy("AllowAll", policy =>
@@ -53,6 +56,8 @@ namespace OrderManagement
                     policy.AllowAnyOrigin();
                 });
             });
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +67,8 @@ namespace OrderManagement
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseCors("AllowAll");
