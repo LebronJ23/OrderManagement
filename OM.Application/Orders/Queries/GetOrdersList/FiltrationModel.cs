@@ -9,13 +9,13 @@ namespace OM.Application.Orders.Queries.GetOrdersList
 {
     public class FiltrationModel
     {
-        public string[] Numbers { get; set; }
+        public string[] Numbers { get; set; } = Array.Empty<string>();
         public DateTime StartDate { get; set; } = DateTime.Now.AddMonths(-1);
         public DateTime EndDate { get; set; } = DateTime.Now;
 
-        public string[] OrderItemNames { get; set; }
-        public string[] OrderItemUnits { get; set; }
+        public string[] OrderItemNames { get; set; } = Array.Empty<string>();
+        public string[] OrderItemUnits { get; set; } = Array.Empty<string>();
 
-        public int[] FiltrationProviders { get; set; }
+        public int[] FiltrationProviders { get; set; } = Array.Empty<int>();
     }
 }

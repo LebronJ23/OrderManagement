@@ -37,14 +37,6 @@ namespace OM.Application.Orders.Queries.GetOrderDetails
                 .ForMember(orderVm => orderVm.ProviderId, opt => opt.MapFrom(order => order.ProviderId));
             profile.CreateMap<OrderDetailsVm, DeleteOrderCommand>()
                 .ForMember(orderVm => orderVm.Id, opt => opt.MapFrom(order => order.Id));
-
-
-            //.ForMember(orderVm => orderVm.Id, opt => opt.MapFrom(order => order.Id))
-            //.ForMember(orderVm => orderVm.Number, opt => opt.MapFrom(order => order.Number))
-            //.ForMember(orderVm => orderVm.Date, opt => opt.MapFrom(order => order.Date))
-            //.ForMember(orderVm => orderVm.ProviderId, opt => opt.MapFrom(order => order.ProviderId))
-            //.ForMember(orderVm => orderVm.Provider, opt => opt.MapFrom(order => order.Provider))
-            //.ForMember(orderVm => orderVm.OrderItems, opt => opt.MapFrom(order => order.OrderItems));
         }
     }
 }

@@ -9,10 +9,6 @@ namespace OM.Application.Orders.Queries.GetOrdersList
 {
     public class GetOrderListQuery : IRequest<OrderTableListVm>
     {
-        public ProviderListVm Providers { get; set; }
-        public OrderItemListVm OrderItems { get; set; }
-        public List<OrderTableVm> Numbers { get; set; }
-        //public ProviderListVm Providers { get; set; }
         public FiltrationModel FiltrationModel { get; set; }
     }
 }

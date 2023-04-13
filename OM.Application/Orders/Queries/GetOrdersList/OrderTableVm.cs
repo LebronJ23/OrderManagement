@@ -22,13 +22,7 @@ namespace OM.Application.Orders.Queries.GetOrdersList
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Order, OrderTableVm>()
-                .ForMember(orderVm => orderVm.Id, opt => opt.MapFrom(order => order.Id))
-                .ForMember(orderVm => orderVm.Number, opt => opt.MapFrom(order => order.Number))
-                .ForMember(orderVm => orderVm.Date, opt => opt.MapFrom(order => order.Date))
-                .ForMember(orderVm => orderVm.ProviderId, opt => opt.MapFrom(order => order.ProviderId))
-                .ForMember(orderVm => orderVm.OrderItems, opt => opt.MapFrom(order => order.OrderItems))
-                .ForMember(orderVm => orderVm.Provider, opt => opt.MapFrom(order => order.Provider));
+            profile.CreateMap<Order, OrderTableVm>();
         }
     }
 }

@@ -25,40 +25,50 @@ namespace OM.Application.Orders.Queries.GetOrdersList
         public async Task<OrderTableListVm> Handle(GetOrderListQuery request, CancellationToken cancellationToken)
         {
             var filtrationModel = request.FiltrationModel;
-            var providerIds = filtrationModel.FiltrationProviders?.ToList() ?? new List<int>();
-            var numbers = filtrationModel.Numbers?.ToList() ?? new List<string>();
-            var orderItemNames = filtrationModel.OrderItemNames?.ToList() ?? new List<string>();
-            var orderItemUnits = filtrationModel.OrderItemUnits?.ToList() ?? new List<string>();
-            var ordersList = await _dbContext
+
+            IQueryable<Order> queryResult = _dbContext
                 .Orders
                 .Include(order => order.OrderItems)
-                .Where(order =>
-                    numbers.Any()
-                    ? numbers.Contains(order.Number)
-                    : true)
-                .Where(order =>
-                    orderItemNames.Any()
-                    ? order.OrderItems.Where(oI => orderItemNames.Contains(oI.Name)).Any()
-                    : true)
-                .Where(order =>
-                    orderItemUnits.Any()
-                    ? order.OrderItems.Where(oI => orderItemUnits.Contains(oI.Unit)).Any()
-                    : true)
-                .Where(order =>
-                    providerIds.Any()
-                    ? providerIds.Contains(order.ProviderId)
-                    : true)
-                .Where(order => order.Date > filtrationModel.StartDate && order.Date < filtrationModel.EndDate)
+                .Where(order => order.Date > filtrationModel.StartDate && order.Date < filtrationModel.EndDate);
+
+            if (filtrationModel.Numbers.Any())
+            {
+                queryResult = queryResult.Where(order => filtrationModel.Numbers.Contains(order.Number));
+            }
+
+            if (filtrationModel.FiltrationProviders.Any())
+            {
+                queryResult = queryResult.Where(order => filtrationModel.FiltrationProviders.Contains(order.ProviderId));
+            }
+
+            if (filtrationModel.OrderItemNames.Any())
+            {
+                queryResult = queryResult
+                    .Where(order => 
+                        order.OrderItems
+                        .Where(orderItem => filtrationModel.OrderItemNames.Contains(orderItem.Name))
+                        .Any()
+                    );
+            }
+
+            if (filtrationModel.OrderItemUnits.Any())
+            {
+                queryResult = queryResult
+                    .Where(order =>
+                        order.OrderItems
+                        .Where(orderItem => filtrationModel.OrderItemUnits.Contains(orderItem.Unit))
+                        .Any()
+                    );
+            }
+
+            var ordersList = await queryResult
                 .ProjectTo<OrderTableVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
-            
+
             return new OrderTableListVm 
             {
                 Orders = ordersList,
                 FiltrationModel = filtrationModel, 
-                Providers = request.Providers,
-                OrderItems = request.OrderItems,
-                Numbers = request.Numbers
             };
         }
     }

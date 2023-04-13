@@ -12,13 +12,13 @@ namespace OM.Infrastructure.EntityTypeConfiguration
         public void Configure(EntityTypeBuilder<OrderItem> builder)
         {
             builder.HasKey(orderItem => orderItem.Id);
-            //builder.HasIndex(order => order.Id).IsUnique();
             builder.HasIndex(orderItem => new { orderItem.Name });
             builder.Property(orderItem => orderItem.Name).IsRequired();
             builder.Property(orderItem => orderItem.Quantity).IsRequired();
             builder.Property(orderItem => orderItem.Unit).IsRequired();
+            //builder.HasOne(orderItem => orderItem.Order).WithMany(order => order.OrderItems)
             //builder.HasOne(orderItem => orderItem.Order).
-            //builder.HasCheckConstraint("Name", "Name <> Select Number from Order where Order.Id == ");
+            //builder.HasCheckConstraint("Name", "[Name] != (Select [Number] from [Order] where [Order].[Id] = [OrderId])");
         }
     }
 }
