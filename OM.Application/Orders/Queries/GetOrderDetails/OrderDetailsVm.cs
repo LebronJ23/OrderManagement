@@ -19,7 +19,7 @@ namespace OM.Application.Orders.Queries.GetOrderDetails
     {
         public int Id { get; set; }
         public string Number { get; set; }
-        public DateTime Date { get; set; } = DateTime.Now;
+        public DateTime Date { get; set; } = DateTime.Now.Truncate(TimeSpan.FromMinutes(1));
         public int ProviderId { get; set; }
         public ProviderVm Provider { get; set; }
         public IEnumerable<OrderItemTableVm> OrderItems { get; set; } = Enumerable.Empty<OrderItemTableVm>();

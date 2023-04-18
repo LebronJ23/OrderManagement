@@ -29,7 +29,9 @@ namespace OM.Application.Orders.Queries.GetOrdersList
             IQueryable<Order> queryResult = _dbContext
                 .Orders
                 .Include(order => order.OrderItems)
-                .Where(order => order.Date > filtrationModel.StartDate && order.Date < filtrationModel.EndDate);
+                // less or equal applied because I want to show all data after seeding
+                // if only less will be applied start page after seeding will not show any data in table
+                .Where(order => order.Date > filtrationModel.StartDate && order.Date <= filtrationModel.EndDate);
 
             if (filtrationModel.Numbers.Any())
             {

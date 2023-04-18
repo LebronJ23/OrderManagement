@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OM.Application;
 using OM.Domain;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,14 @@ namespace OM.Infrastructure
             );
 
             modelBuilder.Entity<Order>().HasData(
-                new Order { Id = 1, Number = "001", Date = DateTime.Now, ProviderId = 1 },
-                new Order { Id = 2, Number = "002", Date = DateTime.Now, ProviderId = 1 },
-                new Order { Id = 3, Number = "003", Date = DateTime.Now, ProviderId = 2 },
-                new Order { Id = 4, Number = "004", Date = DateTime.Now, ProviderId = 2 },
-                new Order { Id = 5, Number = "005", Date = DateTime.Now, ProviderId = 3 },
-                new Order { Id = 6, Number = "006", Date = DateTime.Now, ProviderId = 3 },
-                new Order { Id = 7, Number = "007", Date = DateTime.Now, ProviderId = 4 },
-                new Order { Id = 8, Number = "008", Date = DateTime.Now, ProviderId = 4 }
+                new Order { Id = 1, Number = "001", Date = DateTime.Now.Truncate(TimeSpan.FromMinutes(1)), ProviderId = 1 },
+                new Order { Id = 2, Number = "002", Date = DateTime.Now.Truncate(TimeSpan.FromMinutes(1)), ProviderId = 1 },
+                new Order { Id = 3, Number = "003", Date = DateTime.Now.Truncate(TimeSpan.FromMinutes(1)), ProviderId = 2 },
+                new Order { Id = 4, Number = "004", Date = DateTime.Now.Truncate(TimeSpan.FromMinutes(1)), ProviderId = 2 },
+                new Order { Id = 5, Number = "005", Date = DateTime.Now.Truncate(TimeSpan.FromMinutes(1)), ProviderId = 3 },
+                new Order { Id = 6, Number = "006", Date = DateTime.Now.Truncate(TimeSpan.FromMinutes(1)), ProviderId = 3 },
+                new Order { Id = 7, Number = "007", Date = DateTime.Now.Truncate(TimeSpan.FromMinutes(1)), ProviderId = 4 },
+                new Order { Id = 8, Number = "008", Date = DateTime.Now.Truncate(TimeSpan.FromMinutes(1)), ProviderId = 4 }
             );
 
             modelBuilder.Entity<OrderItem>().HasData(

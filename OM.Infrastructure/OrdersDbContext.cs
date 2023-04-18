@@ -25,9 +25,10 @@ namespace OM.Infrastructure
         {
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
             modelBuilder.ApplyConfiguration(new OrderItemTypeConfiguration());
-            base.OnModelCreating(modelBuilder);
-
+            
             modelBuilder.SeedData();
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

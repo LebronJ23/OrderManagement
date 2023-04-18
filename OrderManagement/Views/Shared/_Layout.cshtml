@@ -1,7 +1,13 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <link href="/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/lib/twitter-bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/lib/bootstrap-multiselect/css/bootstrap-multiselect.css" />
+
+    <script src="/lib/jquery/jquery.min.js"></script>
+    <script src="/lib/twitter-bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib//bootstrap-multiselect/js/bootstrap-multiselect.min.js"></script>
+
     <title>@ViewBag.Title</title>
 </head>
 <body>
@@ -9,5 +15,9 @@
         MVC Management
     </h5>
     @RenderBody()
+
+    <script>
+        $('select[multiple]').multiselect()
+    </script>
 </body>
 </html>

@@ -17,8 +17,4 @@
     <ProjectReference Include="..\OM.Infrastructure\OM.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
-
 </Project>
